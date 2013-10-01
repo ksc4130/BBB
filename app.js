@@ -9,4 +9,3 @@ btn.watch(function (err, value) {
     led.writeSync(led.readSync() === 0 ? 1 : 0); // 1 = on, 0 = off :)
     //btn.unexport(); // Unexport GPIO and free resources
 });
-
