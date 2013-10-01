@@ -1,6 +1,6 @@
 var Gpio = require('onoff').Gpio,
     led = new Gpio(67, 'out'),    // Export GPIO #67 as an output.
-    btn = new Gpio(44, 'in', 'both'); // Export GPIO #44 as an interrupt
+    btn = new Gpio(44, 'in'); // Export GPIO #44 as an interrupt
 
 btn.watch(function (err, value) {
     if (err) throw err;
