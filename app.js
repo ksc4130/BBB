@@ -63,7 +63,7 @@ var device = function (pin, args) {
     self.id = idDeviceCnt++;
     self.actionType = args.actionType;
     self.type = args.type;
-    self.pin = args.pin;
+    self.pin = pin;
     self.name = args.name || 'untitled';
     self.state = args.state;
     self.controls = args.controls;
@@ -79,11 +79,10 @@ var device = function (pin, args) {
 var devices = {};
 var groups = {};
 
-devices['1'] = device({
+devices['1'] = device('P8_8', {
     name: 'led',
     actionType: 'onoff',
     type: 'light',
-    pin: 'P8_8',
     state: 0
 });
 
