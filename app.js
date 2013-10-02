@@ -47,6 +47,16 @@ var devicePrototype = {
         if(self.actionType === 'onoff') {
             self.state = state || (1 - (self.state || 0))
             b.digitalWrite(self.pin, self.state);
+        } else if(self.actionType === 'switch') {
+            var controls = self.controls;
+            if(typeof controls !== 'string') {
+                for (var d in devices) {
+                    if(devices[d].pin === controls) {
+                        controls = devices[d];
+                    }
+                }
+            }
+            controls.toggle();
         }
     }
 };
@@ -70,6 +80,9 @@ var device = function (pin, args) {
     if(args.actionType && args.actionType === 'onoff') {
         b.pinMode(self.pin, 'out');
         b.digitalWrite(self.pin, (self.state || 0));
+    } else if(args.actionType && args.actionType === 'switch') {
+        b.pinMode(self.pin, 'in');
+        b.attachInterrupt(self.pin, true, 'falling', self.toggle);
     }
 
     return self;
@@ -85,6 +98,12 @@ devices['1'] = device('P8_8', {
     state: 0
 });
 
+devices['2'] = device('P8_12', {
+    name: 'led switch',
+    actionType: 'switch',
+    type: 'light'
+});
+
 
 //var led = 'P8_8',
 //    photo = 'P9_36';
@@ -92,12 +111,12 @@ devices['1'] = device('P8_8', {
 //b.pinMode(led, 'out');
 //b.pinMode(photo, 'in');
 
-setInterval(function () {
-    devices['1'].toggle();
+//setInterval(function () {
+    //devices['1'].toggle();
 //    b.analogRead(photo, function (x) {
 //        if(x.err)
 //            console.log('error', x.err);
 //        else
 //            console.log(x.value);
 //    });
-}, 500);
+//}, 500);
