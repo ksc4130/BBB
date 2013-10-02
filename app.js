@@ -106,14 +106,14 @@ var device = function (pin, args) {
 var devices = {};
 var groups = {};
 
-devices['1'] = new device('P9_8', {
+devices['1'] = new device('P8_8', {
     name: 'led',
     actionType: 'onoff',
     type: 'light',
     state: 0
 });
 
-devices['2'] = new device('P9_12', {
+devices['2'] = new device('P8_12', {
     name: 'led switch',
     actionType: 'switch',
     type: 'light'
