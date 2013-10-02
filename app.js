@@ -77,7 +77,7 @@ var device = function (pin, args) {
     if(!pin || typeof pin !== 'string')
         return null;
 
-    var self = ob(devicePrototype);
+    var self = this;
 
     args = args || {};
 
@@ -98,24 +98,22 @@ var device = function (pin, args) {
         console.log('switch', self.pin);
         b.pinMode(self.pin, 'in');
 
-        //setInterval(self.check, self.freq);
+        setInterval(self.check, self.freq);
     }
-
-    return self;
 };
 
 
 var devices = {};
 var groups = {};
 
-devices['1'] = device('P8_8', {
+devices['1'] = new device('P9_8', {
     name: 'led',
     actionType: 'onoff',
     type: 'light',
     state: 0
 });
 
-devices['2'] = device('P9_12', {
+devices['2'] = new device('P9_12', {
     name: 'led switch',
     actionType: 'switch',
     type: 'light'
