@@ -65,7 +65,7 @@ var device = function (pin, args) {
         console.log('switch', self.pin);
         b.pinMode(self.pin, 'in');
 
-        setInterval(self.check, self.freq);
+        setInterval(self.checkFalling, self.freq);
     }
 };
 
@@ -88,7 +88,7 @@ device.prototype = {
             controls.toggle();
         }
     },
-    check: function () {
+    checkFalling: function () {
         var self = this;
         console.log(JSON.stringify(self));
         b.digitalRead(self.pin, function (x) {
