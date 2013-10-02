@@ -21,7 +21,7 @@ var led = 'P8_8',
     photo = 'P9_36';
 
 b.pinMode(led, 'out');
-b.pinMode(photo, 'in');
+//b.pinMode(photo, 'in');
 
 setInterval(function (x) {
     if(x.err)
