@@ -69,7 +69,7 @@ var device = function (pin, args) {
     self.controls = args.controls;
 
     if(args.actionType && args.actionType === 'onoff') {
-        b.pinMode(args.pin, 'out');
+        b.pinMode(self.pin, 'out');
         b.digitalWrite(self.pin, (self.state || 0));
     }
 
