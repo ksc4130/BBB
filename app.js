@@ -23,9 +23,11 @@ var led = 'P8_8',
 b.pinMode(led, 'out');
 //b.pinMode(photo, 'in');
 
-setInterval(function (x) {
-    if(x.err)
-        console.log('error', x.err);
-    else
-        console.log(x.value);
+setInterval(function () {
+    b.analogRead(photo, function (x) {
+        if(x.err)
+            console.log('error', x.err);
+        else
+            console.log(x.value);
+    });
 }, 500);
