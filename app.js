@@ -104,6 +104,17 @@ devices['2'] = device('P8_12', {
     type: 'light'
 });
 
+var temperature = '/sys/bus/i2c/drivers/bmp085/1-0077/temp0_input';
+b.readTextFile(temperature, printTemperature);
+
+function printTemperature(x) {
+    // '\xB0' is the degree symbol in hexademical
+    console.log("Temperature: ", x.data/10 + '\xB0' + " Celcius");
+    x.data /= 10;
+    x.data *= 1.8;
+    x.data += 32;
+    console.log("or: ", x.data + '\xB0' + " Fahrenheit");
+}
 
 //var led = 'P8_8',
 //    photo = 'P9_36';
