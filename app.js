@@ -45,11 +45,8 @@ var devicePrototype = {
         var self = this;
 
         if(self.actionType === 'onoff') {
-            if(state) {
-                b.digitalWrite(self.pin, state);
-            } else {
-                b.digitalWrite(self.pin, (1 - self.state || 0));
-            }
+            self.state = state || (1 - (self.state || 0))
+            b.digitalWrite(self.pin, self.state);
         }
     }
 };
