@@ -114,7 +114,7 @@ devices['1'] = device('P8_8', {
     state: 0
 });
 
-devices['2'] = device('P8_12', {
+devices['2'] = device('P9_12', {
     name: 'led switch',
     actionType: 'switch',
     type: 'light'
