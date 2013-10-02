@@ -86,11 +86,9 @@ var device = function (pin, args) {
     };
 
     if(args.actionType && args.actionType === 'onoff') {
-        console.log('onoff', self.pin);
         b.pinMode(self.pin, 'out');
         b.digitalWrite(self.pin, (self.state || 0));
     } else if(args.actionType && args.actionType === 'switch') {
-        console.log('switch', self.pin);
         b.pinMode(self.pin, 'in');
 
         setInterval(self.check, self.freq);
@@ -111,7 +109,8 @@ devices['1'] = new device('P8_8', {
 devices['2'] = new device('P8_12', {
     name: 'led switch',
     actionType: 'switch',
-    type: 'light'
+    type: 'light',
+    devices['1']
 });
 
 
