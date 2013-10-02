@@ -62,12 +62,14 @@ var devicePrototype = {
     check: function () {
         var self = this;
         console.log(JSON.stringify(self));
-        var curState = b.digitalRead(self.pin);
-        console.log(curState, self.state);
-        if(curState < self.state) {
-            self.toggle();
-        }
-        self.state = curState;
+        b.digitalRead(self.pin, function (x) {
+            var curState = x.value;
+                console.log(curState, self.state);
+            if(curState < self.state) {
+                self.toggle();
+            }
+            self.state = curState;
+        });
     }
 };
 
