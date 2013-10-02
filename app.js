@@ -74,7 +74,7 @@ var device = function (pin, args) {
             b.digitalWrite(self.pin, self.state);
         } else if(self.actionType === 'switch') {
             var controls = self.controls;
-            if(typeof controls !== 'string') {
+            if(typeof controls === 'string') {
                 for (var d in devices) {
                     if(devices[d].pin === controls) {
                         controls = devices[d];
