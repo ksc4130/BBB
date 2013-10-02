@@ -58,6 +58,15 @@ var devicePrototype = {
             }
             controls.toggle();
         }
+    },
+    check: function () {
+        var self = this;
+        var curState = b.digitalRead(self.pin);
+        console.log(curState, self.state);
+        if(curState < self.state) {
+            self.toggle();
+        }
+        self.state = curState;
     }
 };
 
@@ -76,13 +85,18 @@ var device = function (pin, args) {
     self.name = args.name || 'untitled';
     self.state = args.state;
     self.controls = args.controls;
+    self.freq = args.freq || 5;
 
     if(args.actionType && args.actionType === 'onoff') {
         b.pinMode(self.pin, 'out');
         b.digitalWrite(self.pin, (self.state || 0));
     } else if(args.actionType && args.actionType === 'switch') {
         b.pinMode(self.pin, 'in');
-        b.attachInterrupt(self.pin, true, 'falling', self.toggle);
+        if(self.state) {
+            b.digitalWrite(self.pin, self.state);
+        }
+
+        setInterval(self.check, self.freq);
     }
 
     return self;
@@ -104,17 +118,6 @@ devices['2'] = device('P8_12', {
     type: 'light'
 });
 
-var temperature = '/sys/bus/i2c/drivers/bmp085/1-0077/temp0_input';
-b.readTextFile(temperature, printTemperature);
-
-function printTemperature(x) {
-    // '\xB0' is the degree symbol in hexademical
-    console.log("Temperature: ", x.data/10 + '\xB0' + " Celcius");
-    x.data /= 10;
-    x.data *= 1.8;
-    x.data += 32;
-    console.log("or: ", x.data + '\xB0' + " Fahrenheit");
-}
 
 //var led = 'P8_8',
 //    photo = 'P9_36';
