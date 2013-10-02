@@ -40,39 +40,6 @@ var group = function (args) {
     return self;
 };
 
-var devicePrototype = {
-    toggle: function (state) {
-        var self = this;
-
-        if(self.actionType === 'onoff') {
-            self.state = state || (1 - (self.state || 0))
-            b.digitalWrite(self.pin, self.state);
-        } else if(self.actionType === 'switch') {
-            var controls = self.controls;
-            if(typeof controls !== 'string') {
-                for (var d in devices) {
-                    if(devices[d].pin === controls) {
-                        controls = devices[d];
-                    }
-                }
-            }
-            controls.toggle();
-        }
-    },
-    check: function () {
-        var self = this;
-        console.log(JSON.stringify(self));
-        b.digitalRead(self.pin, function (x) {
-            var curState = x.value;
-                console.log(curState, self.state);
-            if(curState < self.state) {
-                self.toggle();
-            }
-            self.state = curState;
-        });
-    }
-};
-
 var device = function (pin, args) {
     if(!pin || typeof pin !== 'string')
         return null;
@@ -99,6 +66,39 @@ var device = function (pin, args) {
         b.pinMode(self.pin, 'in');
 
         setInterval(self.check, self.freq);
+    }
+};
+
+device.prototype = {
+    toggle: function (state) {
+        var self = this;
+
+        if(self.actionType === 'onoff') {
+            self.state = state || (1 - (self.state || 0))
+            b.digitalWrite(self.pin, self.state);
+        } else if(self.actionType === 'switch') {
+            var controls = self.controls;
+            if(typeof controls !== 'string') {
+                for (var d in devices) {
+                    if(devices[d].pin === controls) {
+                        controls = devices[d];
+                    }
+                }
+            }
+            controls.toggle();
+        }
+    },
+    check: function () {
+        var self = this;
+        console.log(JSON.stringify(self));
+        b.digitalRead(self.pin, function (x) {
+            var curState = x.value;
+            console.log(curState, self.state);
+            if(curState < self.state) {
+                self.toggle();
+            }
+            self.state = curState;
+        });
     }
 };
 
