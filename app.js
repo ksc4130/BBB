@@ -96,7 +96,9 @@ var Device = function (pin, args) {
 
         setInterval(self.switchCheck, self.freq);
     } else if(args.actionType && args.actionType === 'sensor') {
-        b.pinMode(self.pin, 'in');
+        if(analogPins.indexOf(self.pin) < 0) {
+            b.pinMode(self.pin, 'in');
+        }
 
         setInterval(self.sensorCheck, self.freq);
     }
