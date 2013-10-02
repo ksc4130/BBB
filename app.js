@@ -15,6 +15,8 @@
 //    //btn.unexport(); // Unexport GPIO and free resources
 //});
 
+var b = require('bonescript');
+
 var idDeviceCnt = 0;
 var idGroupCnt = 0;
 
@@ -86,9 +88,6 @@ devices['1'] = device('P8_8', {
     state: 0
 });
 
-
-
-var b = require('bonescript');
 
 //var led = 'P8_8',
 //    photo = 'P9_36';
