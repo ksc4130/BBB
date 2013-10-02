@@ -88,6 +88,8 @@ var device = function (pin, args) {
     self.controls = args.controls;
     self.freq = args.freq || 5;
 
+    console.log(self.pin);
+
     if(args.actionType && args.actionType === 'onoff') {
         b.pinMode(self.pin, 'out');
         b.digitalWrite(self.pin, (self.state || 0));
@@ -106,7 +108,7 @@ var device = function (pin, args) {
 var devices = {};
 var groups = {};
 
-devices['1'] = device('P8_8', {
+devices['1'] = device('P9_8', {
     name: 'led',
     actionType: 'onoff',
     type: 'light',
