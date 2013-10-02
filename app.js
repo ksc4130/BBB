@@ -1,34 +1,20 @@
-//var Gpio = require('onoff').Gpio,
-//    led = new Gpio(67, 'out'),    // Export GPIO #67 as an output.
-//    btn = new Gpio(44, 'in', 'falling', {
-//        persistentWatch: true
-//    }); // Export GPIO #44 as an interrupt
-//
-//led.writeSync(0);
-//
-//btn.watch(function (err, value) {
-//    if (err) throw err;
-//
-//    console.log('Button pressed!, its value was ' + value);
-//    if(value === 0)
-//        led.writeSync(led.readSync() === 0 ? 1 : 0); // 1 = on, 0 = off :)
-//    //btn.unexport(); // Unexport GPIO and free resources
-//});
-
 var b = require('bonescript');
 
 var idDeviceCnt = 0;
 var idGroupCnt = 0;
 
-var ob = function (o) {
-    var F = function () {};
-    F.prototype = o || {};
-    var f = new F();
-    return f;
-};
+var analogPins = [
+    'P9_33',
+    'P9_35',
+    'P9_36',
+    'P9_37',
+    'P9_38',
+    'P9_39',
+    'P9_40',
+]
 
-var group = function (args) {
-    var self = ob();
+var Group = function (args) {
+    var self = this;
 
     args = args || {};
 
@@ -40,7 +26,7 @@ var group = function (args) {
     return self;
 };
 
-var device = function (pin, args) {
+var Device = function (pin, args) {
     if(!pin || typeof pin !== 'string')
         return null;
 
@@ -57,7 +43,7 @@ var device = function (pin, args) {
     self.controls = args.controls;
     self.freq = args.freq || 5;
 
-    self.check = function () {
+    self.switchCheck = function () {
         b.digitalRead(self.pin, function (x) {
             var curState = x.value;
             if(curState < self.state) {
@@ -65,6 +51,24 @@ var device = function (pin, args) {
             }
             self.state = curState;
         });
+    };
+
+    self.sensorCheck = function () {
+        if(analogPins.indexOf(self.pin) > -1) {
+            b.analogRead(self.pin, function (x) {
+                var curState = x.value;
+                console.log(curState);
+                self.state = curState;
+            });
+        } else {
+            b.digitalRead(self.pin, function (x) {
+                var curState = x.value;
+                if(curState < self.state) {
+                    self.toggle();
+                }
+                self.state = curState;
+            });
+        }
     };
 
     self.toggle = function (state) {
@@ -90,56 +94,50 @@ var device = function (pin, args) {
     } else if(args.actionType && args.actionType === 'switch') {
         b.pinMode(self.pin, 'in');
 
-        setInterval(self.check, self.freq);
+        setInterval(self.switchCheck, self.freq);
+    } else if(args.actionType && args.actionType === 'sensor') {
+        b.pinMode(self.pin, 'in');
+
+        setInterval(self.sensorCheck, self.freq);
     }
+
+    return self;
 };
 
 
 var devices = {};
 var groups = {};
 
-devices['1'] = new device('P8_8', {
+devices['1'] = new Device('P8_8', {
     name: 'led',
     actionType: 'onoff',
     type: 'light',
     state: 0
 });
 
-devices['2'] = new device('P8_12', {
+devices['2'] = new Device('P8_12', {
     name: 'led switch',
     actionType: 'switch',
     type: 'light',
     controls: 'P8_8'
 });
 
-devices['3'] = new device('P8_10', {
+devices['3'] = new Device('P8_10', {
     name: 'led 2',
     actionType: 'onoff',
     type: 'light',
     state: 0
 });
 
-devices['4'] = new device('P8_14', {
+devices['4'] = new Device('P8_14', {
     name: 'led 2 switch',
     actionType: 'switch',
     type: 'light',
     controls: 'P8_10'
 });
 
-
-
-//var led = 'P8_8',
-//    photo = 'P9_36';
-
-//b.pinMode(led, 'out');
-//b.pinMode(photo, 'in');
-
-//setInterval(function () {
-    //devices['1'].toggle();
-//    b.analogRead(photo, function (x) {
-//        if(x.err)
-//            console.log('error', x.err);
-//        else
-//            console.log(x.value);
-//    });
-//}, 500);
+devices['5'] = new Device('P9_36', {
+    name: 'photo',
+    actionType: 'sensor',
+    type: 'motion'
+});
