@@ -95,9 +95,6 @@ var device = function (pin, args) {
         b.digitalWrite(self.pin, (self.state || 0));
     } else if(args.actionType && args.actionType === 'switch') {
         b.pinMode(self.pin, 'in');
-        if(self.state) {
-            b.digitalWrite(self.pin, self.state);
-        }
 
         setInterval(self.check, self.freq);
     }
@@ -108,14 +105,14 @@ var device = function (pin, args) {
 var devices = {};
 var groups = {};
 
-devices['1'] = device('P8_8', {
+devices['1'] = device('P9_8', {
     name: 'led',
     actionType: 'onoff',
     type: 'light',
     state: 0
 });
 
-devices['2'] = device('P8_12', {
+devices['2'] = device('P9_12', {
     name: 'led switch',
     actionType: 'switch',
     type: 'light'
