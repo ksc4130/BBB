@@ -57,22 +57,18 @@ var device = function (pin, args) {
     self.controls = args.controls;
     self.freq = args.freq || 5;
 
-    if(args.actionType && args.actionType === 'onoff') {
-        console.log('onoff', self.pin);
-        b.pinMode(self.pin, 'out');
-        b.digitalWrite(self.pin, (self.state || 0));
-    } else if(args.actionType && args.actionType === 'switch') {
-        console.log('switch', self.pin);
-        b.pinMode(self.pin, 'in');
+    self.check = function () {
+        b.digitalRead(self.pin, function (x) {
+            var curState = x.value;
+            console.log(curState, self.state);
+            if(curState < self.state) {
+                self.toggle();
+            }
+            self.state = curState;
+        });
+    };
 
-        setInterval(self.checkFalling, self.freq);
-    }
-};
-
-device.prototype = {
-    toggle: function (state) {
-        var self = this;
-
+    self.toggle = function (state) {
         if(self.actionType === 'onoff') {
             self.state = state || (1 - (self.state || 0))
             b.digitalWrite(self.pin, self.state);
@@ -87,18 +83,17 @@ device.prototype = {
             }
             controls.toggle();
         }
-    },
-    checkFalling: function () {
-        var self = this;
-        console.log(JSON.stringify(self));
-        b.digitalRead(self.pin, function (x) {
-            var curState = x.value;
-            console.log(curState, self.state);
-            if(curState < self.state) {
-                self.toggle();
-            }
-            self.state = curState;
-        });
+    };
+
+    if(args.actionType && args.actionType === 'onoff') {
+        console.log('onoff', self.pin);
+        b.pinMode(self.pin, 'out');
+        b.digitalWrite(self.pin, (self.state || 0));
+    } else if(args.actionType && args.actionType === 'switch') {
+        console.log('switch', self.pin);
+        b.pinMode(self.pin, 'in');
+
+        setInterval(self.check, self.freq);
     }
 };
 
