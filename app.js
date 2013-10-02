@@ -110,7 +110,7 @@ devices['2'] = new device('P8_12', {
     name: 'led switch',
     actionType: 'switch',
     type: 'light',
-    controls: devices['1']
+    controls: 'P8_8'
 });
 
 
