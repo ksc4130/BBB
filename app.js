@@ -98,7 +98,7 @@ var device = function (pin, args) {
         console.log('switch', self.pin);
         b.pinMode(self.pin, 'in');
 
-        setInterval(self.check, self.freq);
+        //setInterval(self.check, self.freq);
     }
 
     return self;
