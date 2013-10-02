@@ -90,12 +90,12 @@ var device = function (pin, args) {
     self.controls = args.controls;
     self.freq = args.freq || 5;
 
-    console.log(self.pin);
-
     if(args.actionType && args.actionType === 'onoff') {
+        console.log('onoff', self.pin);
         b.pinMode(self.pin, 'out');
         b.digitalWrite(self.pin, (self.state || 0));
     } else if(args.actionType && args.actionType === 'switch') {
+        console.log('switch', self.pin);
         b.pinMode(self.pin, 'in');
 
         setInterval(self.check, self.freq);
