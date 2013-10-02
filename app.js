@@ -108,7 +108,7 @@ var device = function (pin, args) {
 var devices = {};
 var groups = {};
 
-devices['1'] = device('P9_8', {
+devices['1'] = device('P8_8', {
     name: 'led',
     actionType: 'onoff',
     type: 'light',
