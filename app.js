@@ -17,11 +17,11 @@
 
 var b = require('bonescript');
 
-var led = 'P9_8',
-    photo = 'P8_36';
+var led = 'P8_8',
+    photo = 'P9_36';
 
-pinMode(led, 'out');
-pinMode(photo, 'in');
+b.pinMode(led, 'out');
+b.pinMode(photo, 'in');
 
 setInterval(function (x) {
     if(x.err)
