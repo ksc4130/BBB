@@ -60,7 +60,6 @@ var device = function (pin, args) {
     self.check = function () {
         b.digitalRead(self.pin, function (x) {
             var curState = x.value;
-            console.log(curState, self.state);
             if(curState < self.state) {
                 self.toggle();
             }
@@ -112,6 +111,21 @@ devices['2'] = new device('P8_12', {
     type: 'light',
     controls: 'P8_8'
 });
+
+devices['3'] = new device('P8_10', {
+    name: 'led 2',
+    actionType: 'onoff',
+    type: 'light',
+    state: 0
+});
+
+devices['4'] = new device('P8_14', {
+    name: 'led 2 switch',
+    actionType: 'switch',
+    type: 'light',
+    controls: 'P8_10'
+});
+
 
 
 //var led = 'P8_8',
