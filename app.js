@@ -61,6 +61,7 @@ var devicePrototype = {
     },
     check: function () {
         var self = this;
+        console.log(JSON.stringify(self));
         var curState = b.digitalRead(self.pin);
         console.log(curState, self.state);
         if(curState < self.state) {
