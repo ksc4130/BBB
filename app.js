@@ -14,8 +14,12 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.cookieParser('your secret here'));
-app.use(express.session());
+//app.use(express.cookieParser('your secret here'));
+//app.use(express.session());
+
+app.use(express.cookieParser());
+app.use(express.session({secret: 'secret', key: 'express.sid'}));
+
 app.use(app.router);
 app.use(require('less-middleware')({ src: __dirname + '/public' }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -38,6 +42,25 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 
 var io = require('socket.io').listen(server);
 var pin = '41300048';
+
+io.set('authorization', function (handshakeData, accept) {
+
+    if (handshakeData.headers.cookie) {
+
+        handshakeData.cookie = cookie.parse(handshakeData.headers.cookie);
+
+        handshakeData.sessionID = connect.utils.parseSignedCookie(handshakeData.cookie['express.sid'], 'secret');
+
+        if (handshakeData.cookie['express.sid'] == handshakeData.sessionID) {
+            return accept('Cookie is invalid.', false);
+        }
+
+    } else {
+        return accept('No cookie transmitted.', false);
+    }
+
+    accept(null, true);
+});
 
 io.sockets.on('connection', function (socket) {
     var yup = false;
@@ -131,7 +154,7 @@ var Device = function (pin, args) {
         if(analogPins.indexOf(self.pin) > -1) {
             b.analogRead(self.pin, function (x) {
                 var curState = x.value;
-                console.log(curState);
+                //console.log(curState);
                 self.state = curState;
             });
         } else {
