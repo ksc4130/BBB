@@ -196,7 +196,7 @@ var Device = function (pin, args) {
             var controls = self.controls;
             if(typeof controls === 'string') {
                 for (var i = 0, il = devices.length; i < il; i++) {
-                    if(devicesToSend[i].pin === controls) {
+                    if(devices[i].pin === controls) {
                         controls = devices[i];
                     }
                 }
@@ -263,7 +263,7 @@ devices.push(new Device('P8_14', {
 devices.push(new Device('P9_36', {
     name: 'photo',
     actionType: 'sensor',
-    type: 'motion'
+    type: 'light'
 }));
 
 for(var i = 0, il = devices.length; i < il; i++) {
