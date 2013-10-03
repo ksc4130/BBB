@@ -37,6 +37,7 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 });
 
 var io = require('socket.io').listen(server);
+var pin = '41300048';
 
 io.sockets.on('connection', function (socket) {
     var yup = false;
