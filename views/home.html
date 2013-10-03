@@ -51,12 +51,13 @@
             <div class="modal-body">
                <form role="form">
                    <div class="form-group">
-                       <label>Pin</label>
-                       <input type="password" data-bind="value: pin">
+                       <label>Pin: </label>
+                       <input type="password" data-bind="value: pin, valueUpdate: 'keyup">
                    </div>
+                   <br>
                    <div class="checkbox">
                        <label>
-                           <input type="checkbox" data-bind="checked: remember"> Remember
+                           &nbsp;<input type="checkbox" data-bind="checked: remember"> Remember
                        </label>
                    </div>
                </form>
