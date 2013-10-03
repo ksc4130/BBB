@@ -54,9 +54,15 @@ io.sockets.on('connection', function (socket) {
             socket.emit('yup', false);
             return;
         }
-        var device = devices[data.id];
+        var device;
+        for(var i = 0, il = devices.length; i < il; i++) {
+            if(devices[i].id === data.id) {
+                device = devices[i];
+                break;
+            }
+        }
         if(device)
-            device.set(data.state, function (x, d) {
+            device.toggle(data.state, function (x, d) {
                 io.sockets.emit('change', {id: d.id, state: x.value});
             });
         else
