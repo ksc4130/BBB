@@ -3,6 +3,8 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
+var cookie  = require('cookie');
+var connect = require('connect');
 
 var app = express();
 
