@@ -38,6 +38,7 @@ var vm = new function () {
 
     self.yup = function () {
         $yup.modal('hide');
+        $(document).unbind('keyup', yupEnterBinding);
         socket.emit('yup', {
             pin: self.pin(),
             remember: self.remember()
@@ -48,7 +49,7 @@ var vm = new function () {
 var yupEnterBinding = function (e) {
     if(e.keyCode === 13) {
         vm.yup();
-        $(document).unbind('keyup', yupEnterBinding);
+        $('#btnYup').trigger('click');
     }
 };
 
