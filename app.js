@@ -63,7 +63,8 @@ io.sockets.on('connection', function (socket) {
         }
         if(device)
             device.toggle(data.state, function (x, d) {
-                io.sockets.emit('change', {id: d.id, state: x.value});
+                if(d.isVisible)
+                    io.sockets.emit('change', {id: d.id, state: x.value});
             });
         else
             console.log("can't find device for id ", data.id);
@@ -114,6 +115,7 @@ var Device = function (pin, args) {
     self.state = args.state;
     self.controls = args.controls;
     self.freq = args.freq || 5;
+    self.isVisible = args.isVisible || false;
 
     self.switchCheck = function () {
         b.digitalRead(self.pin, function (x) {
@@ -161,7 +163,7 @@ var Device = function (pin, args) {
             var controls = self.controls;
             if(typeof controls === 'string') {
                 for (var i = 0, il = devices.length; i < il; i++) {
-                    if(devices[i].pin === controls) {
+                    if(devicesToSend[i].pin === controls) {
                         controls = devices[i];
                     }
                 }
@@ -192,13 +194,15 @@ var Device = function (pin, args) {
 
 
 var devices = [];
+var devicesToSend = [];
 var groups = {};
 
 devices.push(new Device('P8_8', {
     name: 'led',
     actionType: 'onoff',
     type: 'light',
-    state: 0
+    state: 0,
+    isVisible: true
 }));
 
 devices.push(new Device('P8_12', {
@@ -212,7 +216,8 @@ devices.push(new Device('P8_10', {
     name: 'led 2',
     actionType: 'onoff',
     type: 'light',
-    state: 0
+    state: 0,
+    isVisible: true
 }));
 
 devices.push(new Device('P8_14', {
@@ -227,3 +232,8 @@ devices.push(new Device('P9_36', {
     actionType: 'sensor',
     type: 'motion'
 }));
+
+for(var i = 0, il = devices.length; i < il; i++) {
+    if(devices[i].isVisible)
+        devicesToSend.push(devices[i]);
+}
