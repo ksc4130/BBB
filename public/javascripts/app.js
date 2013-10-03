@@ -34,6 +34,7 @@ var vm = new function () {
     var self = this;
     self.barn = ko.observableArray([]);
     self.pin = ko.observable();
+    self.remember = ko.observable();
 
     self.yup = function () {
         $yup.modal('hide');
