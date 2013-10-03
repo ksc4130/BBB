@@ -149,6 +149,7 @@ var Device = function (pin, args) {
         if(self.actionType === 'onoff') {
             self.state = state || (1 - (self.state || 0))
             b.digitalWrite(self.pin, self.state, function (x) {
+                x = x || {};
                 if(x.err)
                     self.state = 1 - self.state;
 
