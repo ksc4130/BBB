@@ -75,9 +75,10 @@ io.sockets.on('connection', function (socket) {
         socket.emit('yup', false);
 
     socket.on('yup', function (data) {
-        yup = (data === pin);
+        data = data || {};
+        yup = (data.pin === pin);
         if(yup) {
-            sessionobj[sessId] = true;
+            sessionobj[sessId] = data.remember;
             socket.emit('init', devicesToSend);
         } else {
             sessionobj[sessId] = false;
