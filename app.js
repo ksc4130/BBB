@@ -1,3 +1,69 @@
+var express = require('express');
+var routes = require('./routes');
+var user = require('./routes/user');
+var http = require('http');
+var path = require('path');
+
+var app = express();
+
+// all environments
+app.set('port', process.env.PORT || 4130);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+app.use(express.favicon());
+app.use(express.logger('dev'));
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(express.cookieParser('your secret here'));
+app.use(express.session());
+app.use(app.router);
+app.use(require('less-middleware')({ src: __dirname + '/public' }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+
+if ('development' == app.get('env')) {
+    app.use(express.errorHandler());
+}
+
+app.get('/', routes.index);
+app.get('/users', user.list);
+
+app.post('/yup', function(req, res){
+
+});
+
+var server = http.createServer(app).listen(app.get('port'), function(){
+    console.log('Express server listening on port ' + app.get('port'));
+});
+
+var io = require('socket.io').listen(server);
+
+io.sockets.on('connection', function (socket) {
+    var yup = false;
+    socket.emit('yup', false);
+    socket.on('yup', function (data) {
+        yup = (data === pin);
+        if(yup)
+            socket.emit('init', devices);
+        else
+            socket.emit('yup', false);
+    });
+    socket.on('change', function (data) {
+        if(!yup) {
+            socket.emit('yup', false);
+            return;
+        }
+        var device = devices[data.id];
+        if(device)
+            device.set(data.state, function() {
+                console.log(device.value);
+                io.sockets.emit('change', {id: data.id, state: device.value});
+            });
+        else
+            console.log("can't find device for id ", data.id);
+    });
+});
+
 var b = require('bonescript');
 
 var idDeviceCnt = 0;
@@ -78,9 +144,9 @@ var Device = function (pin, args) {
         } else if(self.actionType === 'switch') {
             var controls = self.controls;
             if(typeof controls === 'string') {
-                for (var d in devices) {
-                    if(devices[d].pin === controls) {
-                        controls = devices[d];
+                for (var i = 0, il = devices.length; i < il; i++) {
+                    if(devices[i].pin === controls) {
+                        controls = devices[i];
                     }
                 }
             }
@@ -107,39 +173,39 @@ var Device = function (pin, args) {
 };
 
 
-var devices = {};
+var devices = [];
 var groups = {};
 
-devices['1'] = new Device('P8_8', {
+devices.push(new Device('P8_8', {
     name: 'led',
     actionType: 'onoff',
     type: 'light',
     state: 0
-});
+}));
 
-devices['2'] = new Device('P8_12', {
+devices.push(new Device('P8_12', {
     name: 'led switch',
     actionType: 'switch',
     type: 'light',
     controls: 'P8_8'
-});
+}));
 
-devices['3'] = new Device('P8_10', {
+devices.push(new Device('P8_10', {
     name: 'led 2',
     actionType: 'onoff',
     type: 'light',
     state: 0
-});
+}));
 
-devices['4'] = new Device('P8_14', {
+devices.push(new Device('P8_14', {
     name: 'led 2 switch',
     actionType: 'switch',
     type: 'light',
     controls: 'P8_10'
-});
+}));
 
-devices['5'] = new Device('P9_36', {
+devices.push(new Device('P9_36', {
     name: 'photo',
     actionType: 'sensor',
     type: 'motion'
-});
+}));
