@@ -45,7 +45,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('yup', function (data) {
         yup = (data === pin);
         if(yup)
-            socket.emit('init', devices);
+            socket.emit('init', devicesToSend);
         else
             socket.emit('yup', false);
     });
