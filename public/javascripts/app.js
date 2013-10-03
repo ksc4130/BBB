@@ -38,7 +38,10 @@ var vm = new function () {
 
     self.yup = function () {
         $yup.modal('hide');
-        socket.emit('yup', self.pin());
+        socket.emit('yup', {
+            pin: self.pin(),
+            remember: self.remember()
+        });
     };
 };
 socket.on('yup', function (data) {
