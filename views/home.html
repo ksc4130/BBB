@@ -52,7 +52,7 @@
                <form role="form">
                    <div class="form-group">
                        <label>Pin: </label>
-                       <input type="password" data-bind="value: pin, valueUpdate: 'keyup' ">
+                       <input type="password" data-bind="value: pin">
                    </div>
                    <br>
                    <div class="checkbox">
@@ -63,7 +63,7 @@
                </form>
             </div>
             <div class="modal-footer">
-                <button data-bind="click: yup" type="button" class="btn btn-primary">Ok</button>
+                <button id="btnYup" data-bind="click: yup" type="button" class="btn btn-primary">Ok</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
