@@ -44,8 +44,17 @@ var vm = new function () {
         });
     };
 };
+
+var yupEnterBinding = function (e) {
+    if(e.keyCode === 13) {
+        vm.yup();
+        $(document).unbind('keyup', yupEnterBinding);
+    }
+};
+
 socket.on('yup', function (data) {
     if(!data) {
+        $(document).bind('keyup', yupEnterBinding);
         $yup.modal('show');
     }
 });
