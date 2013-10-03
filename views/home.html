@@ -17,7 +17,7 @@
         <!-- ko foreach: barn -->
         <!-- ko if: type === 'light' -->
             <!-- ko if: actionType === 'onoff' -->
-            <div style="margin-bottom: 10px;" data-bind="click: toggle" class="col-sm-1 col-md-3 col-lg-2">
+            <div style="margin-bottom: 10px;" data-bind="click: toggle" class="col-sm-1 col-md-1 col-lg-1">
                 <div class="btn btn-primary btn-block" style="min-height: 210px;">
                     <h3 class="text-center" data-bind="text: name"></h3>
                     <!-- ko if: isOn -->
@@ -31,7 +31,7 @@
             <!-- /ko -->
         <!-- /ko -->
         <!-- ko if: type === 'motion' -->
-        <div style="margin-bottom: 10px;" class="col-sm-6 col-md-3 col-lg-2">
+        <div style="margin-bottom: 10px;" class="col-sm-1 col-md-1 col-lg-1">
             <div class="btn btn-block" data-bind="css: { 'btn-success': isOn, 'btn-primary': isOff }" style="min-height: 210px;">
                 <h3 class="text-center" data-bind="text: name"></h3>
             </div>
