@@ -42,6 +42,7 @@ var server = http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
 });
 
+var sessionobj = {};
 var io = require('socket.io').listen(server);
 var pin = '41300048';
 
@@ -65,14 +66,23 @@ io.set('authorization', function (handshakeData, accept) {
 });
 
 io.sockets.on('connection', function (socket) {
-    var yup = false;
-    socket.emit('yup', false);
+    var sessId = sessionobj[cookie.parse(socket.handshake.sessionID)];
+    var yup = sessionobj[sessId];
+
+    if(yup)
+        socket.emit('init', devicesToSend);
+    else
+        socket.emit('yup', false);
+
     socket.on('yup', function (data) {
         yup = (data === pin);
-        if(yup)
+        if(yup) {
+            sessionobj[sessId] = true;
             socket.emit('init', devicesToSend);
-        else
+        } else {
+            sessionobj[sessId] = false;
             socket.emit('yup', false);
+        }
     });
     socket.on('change', function (data) {
         if(!yup) {
