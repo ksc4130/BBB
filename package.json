@@ -8,6 +8,8 @@
         "express": ">=3.x",
         "ejs": "*",
         "less-middleware": "*",
-        "socket.io": "*"
+        "socket.io": "*",
+        "connect": "*",
+        "cookie": "*"
     }
 }
