@@ -49,7 +49,7 @@ var vm = new function () {
 var yupEnterBinding = function (e) {
     if(e.keyCode === 13) {
         vm.yup();
-        $('#btnYup').trigger('click');
+        $('#btnYup').trigger('focus').trigger('click');
     }
 };
 
