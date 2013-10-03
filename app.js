@@ -5,6 +5,7 @@ var http = require('http');
 var path = require('path');
 var cookie  = require('cookie');
 var connect = require('connect');
+var secret = 'Askindl23@146Fscmaijnd523CXVWGN#63@#7efbsd23#$Rb';
 
 var app = express();
 
@@ -20,7 +21,7 @@ app.use(express.methodOverride());
 //app.use(express.session());
 
 app.use(express.cookieParser());
-app.use(express.session({secret: 'secret', key: 'express.sid'}));
+app.use(express.session({secret: secret, key: 'express.sid'}));
 
 app.use(app.router);
 app.use(require('less-middleware')({ src: __dirname + '/public' }));
@@ -52,7 +53,7 @@ io.set('authorization', function (handshakeData, accept) {
 
         handshakeData.cookie = cookie.parse(handshakeData.headers.cookie);
 
-        handshakeData.sessionID = connect.utils.parseSignedCookie(handshakeData.cookie['express.sid'], 'secret');
+        handshakeData.sessionID = connect.utils.parseSignedCookie(handshakeData.cookie['express.sid'], secret);
 
         if (handshakeData.cookie['express.sid'] == handshakeData.sessionID) {
             return accept('Cookie is invalid.', false);
