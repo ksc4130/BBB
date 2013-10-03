@@ -38,7 +38,7 @@ var vm = new function () {
 
     self.yup = function () {
         $yup.modal('hide');
-        $(document).unbind('keyup', yupEnterBinding);
+        //$(document).unbind('keyup', yupEnterBinding);
         socket.emit('yup', {
             pin: self.pin(),
             remember: self.remember()
@@ -55,7 +55,7 @@ var yupEnterBinding = function (e) {
 
 socket.on('yup', function (data) {
     if(!data) {
-        $(document).bind('keyup', yupEnterBinding);
+        //$(document).bind('keyup', yupEnterBinding);
         $yup.modal('show');
     }
 });
