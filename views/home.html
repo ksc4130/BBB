@@ -49,8 +49,17 @@
                 <h4 class="modal-title">Pin</h4>
             </div>
             <div class="modal-body">
-                <input type="password" data-bind="value: pin">
-                <input type="checkbox" data-bind="checked: remember">
+               <form role="form">
+                   <div class="form-group">
+                       <label>Pin</label>
+                       <input type="password" data-bind="value: pin">
+                   </div>
+                   <div class="checkbox">
+                       <label>
+                           <input type="checkbox" data-bind="checked: remember"> Remember
+                       </label>
+                   </div>
+               </form>
             </div>
             <div class="modal-footer">
                 <button data-bind="click: yup" type="button" class="btn btn-primary">Ok</button>
