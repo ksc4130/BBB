@@ -6,8 +6,6 @@
     "main": "app.js",
     "dependencies": {
         "express": ">=3.x",
-        "socket.io": "*",
-        "onoff": ">=0.2.x",
-        "bonescript": ">=0.2.x"
+        "socket.io": "*"
     }
 }
