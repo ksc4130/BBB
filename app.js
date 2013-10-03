@@ -56,9 +56,8 @@ io.sockets.on('connection', function (socket) {
         }
         var device = devices[data.id];
         if(device)
-            device.set(data.state, function() {
-                console.log(device.value);
-                io.sockets.emit('change', {id: data.id, state: device.value});
+            device.set(data.state, function (x, d) {
+                io.sockets.emit('change', {id: d.id, state: x.value});
             });
         else
             console.log("can't find device for id ", data.id);
@@ -131,17 +130,26 @@ var Device = function (pin, args) {
             b.digitalRead(self.pin, function (x) {
                 var curState = x.value;
                 if(curState < self.state) {
-                    self.toggle();
+                    self.toggle(null, function (x, d) {
+                        io.sockets.emit('change', {id: d.id, state: x.value});
+                    });
                 }
                 self.state = curState;
             });
         }
     };
 
-    self.toggle = function (state) {
+    self.toggle = function (state, callback) {
         if(self.actionType === 'onoff') {
             self.state = state || (1 - (self.state || 0))
-            b.digitalWrite(self.pin, self.state);
+            b.digitalWrite(self.pin, self.state, function (x) {
+                if(x.err)
+                    self.state = 1 - self.state;
+
+                x.value = self.state;
+                if(typeof callback === 'function')
+                    callback(x, self);
+            });
         } else if(self.actionType === 'switch') {
             var controls = self.controls;
             if(typeof controls === 'string') {
@@ -151,7 +159,9 @@ var Device = function (pin, args) {
                     }
                 }
             }
-            controls.toggle();
+            controls.toggle(null, function (x, d) {
+                io.sockets.emit('change', {id: d.id, state: x.value});
+            });
         }
     };
 
