@@ -231,7 +231,7 @@ var devicesToSend = [];
 var groups = {};
 
 devices.push(new Device('P8_8', {
-    name: 'led',
+    name: 'Den',
     actionType: 'onoff',
     type: 'light',
     state: 0,
@@ -239,32 +239,32 @@ devices.push(new Device('P8_8', {
 }));
 
 devices.push(new Device('P8_12', {
-    name: 'led switch',
+    name: 'Den switch',
     actionType: 'switch',
     type: 'light',
     controls: 'P8_8'
 }));
 
-devices.push(new Device('P8_10', {
-    name: 'led 2',
-    actionType: 'onoff',
-    type: 'light',
-    state: 0,
-    isVisible: true
-}));
-
-devices.push(new Device('P8_14', {
-    name: 'led 2 switch',
-    actionType: 'switch',
-    type: 'light',
-    controls: 'P8_10'
-}));
-
-devices.push(new Device('P9_36', {
-    name: 'photo',
-    actionType: 'sensor',
-    type: 'light'
-}));
+//devices.push(new Device('P8_10', {
+//    name: 'led 2',
+//    actionType: 'onoff',
+//    type: 'light',
+//    state: 0,
+//    isVisible: true
+//}));
+//
+//devices.push(new Device('P8_14', {
+//    name: 'led 2 switch',
+//    actionType: 'switch',
+//    type: 'light',
+//    controls: 'P8_10'
+//}));
+//
+//devices.push(new Device('P9_36', {
+//    name: 'photo',
+//    actionType: 'sensor',
+//    type: 'light'
+//}));
 
 for(var i = 0, il = devices.length; i < il; i++) {
     if(devices[i].isVisible)
