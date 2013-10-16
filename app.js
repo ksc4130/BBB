@@ -192,7 +192,15 @@ var Device = function (pin, args) {
                 if(typeof callback === 'function')
                     callback(x, self);
             });
-        } else if(self.actionType === 'switch') {
+        } else if (self.actionType === 'momentary') {
+            b.digitalWrite(self.pin, 1, function (x) {
+                setTimeout(function () {
+                    b.digitalWrite(self.pin, 0, function (x) {
+
+                    });
+                }, 250);
+            });
+    } else if(self.actionType === 'switch') {
             var controls = self.controls;
             if(typeof controls === 'string') {
                 for (var i = 0, il = devices.length; i < il; i++) {
@@ -210,6 +218,9 @@ var Device = function (pin, args) {
     if(args.actionType && args.actionType === 'onoff') {
         b.pinMode(self.pin, 'out');
         b.digitalWrite(self.pin, (self.state || 0));
+    } else if(args.actionType && args.actionType === 'momentary') {
+        b.pinMode(self.pin, 'out');
+        b.digitalWrite(self.pin, 0);
     } else if(args.actionType && args.actionType === 'switch') {
         b.pinMode(self.pin, 'in');
 
@@ -234,6 +245,14 @@ devices.push(new Device('P8_8', {
     name: 'Den',
     actionType: 'onoff',
     type: 'light',
+    state: 0,
+    isVisible: true
+}));
+
+devices.push(new Device('P8_10', {
+    name: 'Garage Door',
+    actionType: 'momentary',
+    type: 'overheadDoor',
     state: 0,
     isVisible: true
 }));
